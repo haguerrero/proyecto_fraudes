@@ -1,0 +1,17 @@
+{
+  "model_version": 3.0,
+  "model_name": "XGBClassifier_fraud_detector_v3",
+  "model_type": "XGBClassifier",
+  "exported_at": "28-08-2025 19:12:50",
+  "best_threshold": 0.61,
+  "features": [
+    "step",
+    "amount",
+    "type_CASH_OUT",
+    "type_DEBIT",
+    "type_PAYMENT",
+    "type_TRANSFER"
+  ],
+  "target": "isFraud",
+  "created_by": "Hugo Guerrero"
+}

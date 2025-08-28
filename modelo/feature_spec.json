@@ -1,0 +1,18 @@
+{
+  "columns": [
+    "step",
+    "amount",
+    "type_CASH_OUT",
+    "type_DEBIT",
+    "type_PAYMENT",
+    "type_TRANSFER"
+  ],
+  "dtypes": {
+    "step": "int64",
+    "amount": "float64",
+    "type_CASH_OUT": "bool",
+    "type_DEBIT": "bool",
+    "type_PAYMENT": "bool",
+    "type_TRANSFER": "bool"
+  }
+}
