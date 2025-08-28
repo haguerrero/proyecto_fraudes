@@ -5,7 +5,7 @@ import pandas as pd
 import os
 
 # Initialize FastAPI app
-BASE_DIR = os.path.join(os.path.dirname(__file__), 'model')
+BASE_DIR = os.path.join(os.path.dirname(__file__), 'modelo')
 
 # Load the pre-trained model
 model = joblib.load(os.path.join(BASE_DIR, 'fraud_model_v3.joblib'))
@@ -34,6 +34,9 @@ class Transaction(BaseModel):
     type_PAYMENT: bool
     type_TRANSFER: bool
 
+class TransactioninBatch(BaseModel):
+    transactions: list[Transaction]
+
 @app.post("/predict")
 def predict(transaction: Transaction):
     data = pd.DataFrame([transaction.model_dump()])[FEATURES]
@@ -51,3 +54,34 @@ def predict(transaction: Transaction):
             "model_name": metadata["model_name"],
         }
     }
+
+@app.post("/predict_batch")
+def predict_batch(transactions: TransactioninBatch):
+    data = pd.DataFrame(transactions.model_dump()["transactions"])[FEATURES]
+
+    y_proba = model.predict_proba(data)[:, 1]
+    y_pred = (y_proba >= THRESHOLD).astype(int)
+
+    return {
+        "probabilities": y_proba.tolist(),
+        "predictions": y_pred.tolist(),
+        "threshold": THRESHOLD,
+        "metadata": {
+            "model_version": metadata["model_version"],
+            "model_type": metadata["model_type"],
+            "model_name": metadata["model_name"],
+        }
+    }
+
+@app.get("/")
+def read_root():
+    return {
+        "message": "🚀 Fraud Detection API is running!",
+        "model_name": metadata["model_name"],
+        "model_version": metadata["model_version"],
+        "threshold": THRESHOLD
+    }
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
