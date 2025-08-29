@@ -1,7 +1,8 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from pydantic import BaseModel
 import joblib, json
 import pandas as pd
+import numpy as np
 import os
 from typing import Optional
 
@@ -28,7 +29,7 @@ app = FastAPI(
 
 
 class Transaction(BaseModel):
-    TransactionID: Optional[int] = None
+    TransactionID: Optional[str] = None
     step: int
     amount: float
     type_CASH_OUT: bool
@@ -69,21 +70,34 @@ def predict_batch(transactions: TransactioninBatch):
     y_pred = (y_proba >= THRESHOLD).astype(int)
 
     results = []
+    frauds = []
 
     for tx, proba, pred in zip(tx_list, y_proba, y_pred):
-        results.append({
+        result = {
             "transaction": tx,
             "probability": float(proba),
             "prediction": int(pred),
-            "threshold": THRESHOLD
-        })
+            
+        }
+
+        results.append(result)
+        if pred == 1:
+            frauds.append(result)
+
+    summary = {
+        "total_transactions": len(results),
+        "frauds_detected": len(frauds),
+        "fraud_transactions": frauds
+    }
 
     return {
         "results": results,
+        "summary": summary,
         "metadata": {
             "model_version": metadata["model_version"],
             "model_type": metadata["model_type"],
             "model_name": metadata["model_name"],
+            "threshold": THRESHOLD
         }
     }
 
@@ -99,3 +113,26 @@ def read_root():
 @app.get("/health")
 def health_check():
     return {"status": "ok"}
+
+@app.get("/generate_transactions")
+def generate_transactions(number: int = Query(10, description="Número de transacciones a generar")):
+    steps = np.random.randint(1, 744, size=number)
+    amounts = np.round(np.random.uniform(0.0, 100000.0, size=number), 2)
+    types = np.random.choice(["CASH_OUT", "DEBIT", "PAYMENT", "TRANSFER"], size=number)
+    transactions = [
+        {
+            "TransactionID": f"SIM{i+1:06d}",
+            "step": int(steps[i]),
+            "amount": float(amounts[i]),
+            "type_CASH_OUT": types[i] == "CASH_OUT",
+            "type_DEBIT": types[i] == "DEBIT",
+            "type_PAYMENT": types[i] == "PAYMENT",
+            "type_TRANSFER": types[i] == "TRANSFER"
+        }
+        for i in range(number)
+    ]
+
+    return {
+        "generated_transactions": number,
+        "transactions": transactions
+        }
