@@ -3,9 +3,9 @@
 ## Objetivo
 Construir un modelo de **machine learning** que detecte si una operación es fraudulenta, basado en las características de las transacciones.
 
-## Descripción
+## 📖 Descripción
 
-### Requisitos previos
+### 📝 Requisitos previos
 - Python 3.13+
 - pip
 - Virtualenv <small style="font-size: 0.8em;">*Recomendado.</small>
@@ -31,12 +31,21 @@ Esto levantará la API en `http://127.0.0.1:8000`
 
 ## Uso de la API
 
-## Detalles del modelo
+## 🤖 Detalles del modelo
 - Algoritmo: `XGBClassifier`
 - Dataset: [-Kaggle- Fraudulent Transactions Data](https://www.kaggle.com/datasets/chitwanmanchanda/fraudulent-transactions-data/data) 
 - Features:
     - `amount`
-    - `
+    - `step`
+    - `type_CASH_OUT`
+    - `type_DEBIT`
+    - `type_PAYMENT`
+    - `type_TRANSFER`
+- Métricas:
+    - Presicion: 0.04
+    - Recall: 0.77
+    - f1-score: 0.07
+- Umbral de clasificación: 0.610
 
 
 
