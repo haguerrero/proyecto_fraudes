@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import joblib, json
 import pandas as pd
 import os
+from typing import Optional
 
 # Initialize FastAPI app
 BASE_DIR = os.path.join(os.path.dirname(__file__), 'modelo')
@@ -27,6 +28,7 @@ app = FastAPI(
 
 
 class Transaction(BaseModel):
+    TransactionID: Optional[int] = None
     step: int
     amount: float
     type_CASH_OUT: bool
@@ -45,6 +47,7 @@ def predict(transaction: Transaction):
     y_pred = int(y_proba >= THRESHOLD)
 
     return {
+        "trasaction_id": transaction.model_dump(),
         "probability": float(y_proba),
         "prediction": y_pred,
         "threshold": THRESHOLD,
@@ -57,15 +60,26 @@ def predict(transaction: Transaction):
 
 @app.post("/predict_batch")
 def predict_batch(transactions: TransactioninBatch):
-    data = pd.DataFrame(transactions.model_dump()["transactions"])[FEATURES]
+
+    tx_list = transactions.model_dump()["transactions"]
+
+    data = pd.DataFrame(tx_list)[FEATURES]
 
     y_proba = model.predict_proba(data)[:, 1]
     y_pred = (y_proba >= THRESHOLD).astype(int)
 
+    results = []
+
+    for tx, proba, pred in zip(tx_list, y_proba, y_pred):
+        results.append({
+            "transaction": tx,
+            "probability": float(proba),
+            "prediction": int(pred),
+            "threshold": THRESHOLD
+        })
+
     return {
-        "probabilities": y_proba.tolist(),
-        "predictions": y_pred.tolist(),
-        "threshold": THRESHOLD,
+        "results": results,
         "metadata": {
             "model_version": metadata["model_version"],
             "model_type": metadata["model_type"],
