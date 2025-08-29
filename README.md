@@ -11,13 +11,21 @@ Construir un modelo de **machine learning** que detecte si una operación es fra
 - Virtualenv <small style="font-size: 0.8em;">*Recomendado.</small>
 
 ## ⚙️ Instalación
-1. `git clone https://github.com/haguerrero/proyecto_fraudes.git`
+1. Obtener el proyecto desde el repositorio 
+```batch
+git clone https://github.com/haguerrero/proyecto_fraudes.git
+```
 
-2. Crear venv
-`python3 -m venv v_fraud_model`
+2. Crear venv, aunque es opcional es muy recomendable.
+```batch
+python3 -m venv v_fraud_model
+```
 
-3. Dependencias
-`pip install -r requirements`
+
+3. Instalar las ependencias
+```batch
+pip install -r requirements
+```
 
 4. Fraud Detection API
 
@@ -42,10 +50,10 @@ Esto levantará la API en `http://127.0.0.1:8000`
     - `type_PAYMENT`
     - `type_TRANSFER`
 - Métricas:
-    - Presicion: 0.04
-    - Recall: 0.77
-    - f1-score: 0.07
-- Umbral de clasificación: 0.610
+    - Presicion: `0.04`
+    - Recall: `0.77`
+    - f1-score: `0.07`
+- Umbral de clasificación: `0.610`
 
 
 
