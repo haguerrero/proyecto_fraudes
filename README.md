@@ -4,6 +4,9 @@
 Construir un modelo de **machine learning** que detecte si una operación es fraudulenta, basado en las características de las transacciones.
 
 ## 📖 Descripción
+El proyecto, esta basado en un dataset de kaggle que he hecho fue el proyecto con el dataset mas grande que encontré, la data contenida en un archivo CSV contiene mas de 6 millones de registros en 10 columnas, es un archivo de aproximadamente 470 MiB de información.
+
+El modelo en si es un modelo supervisado, la data contiene un feature que indica que transacciones han sido fraudes y por tanto se marca la misma en este feature.
 
 ### 📝 Requisitos previos
 - Python 3.13+
@@ -54,6 +57,3 @@ Esto levantará la API en `http://127.0.0.1:8000`
     - Recall: `0.77`
     - f1-score: `0.07`
 - Umbral de clasificación: `0.610`
-
-
-
