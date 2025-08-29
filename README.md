@@ -42,6 +42,15 @@ Esto levantará la API en `http://127.0.0.1:8000`
 
 ## Uso de la API
 
+## 🐋 Docker 🚢
+Para levantar el contenedor solo es necesario correr estos comandos:
+```batch
+docker compose build
+
+docker compose up
+```
+
+
 ## 🤖 Detalles del modelo
 - Algoritmo: `XGBClassifier`
 - Dataset: [-Kaggle- Fraudulent Transactions Data](https://www.kaggle.com/datasets/chitwanmanchanda/fraudulent-transactions-data/data) 
