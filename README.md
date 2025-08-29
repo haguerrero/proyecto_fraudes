@@ -41,6 +41,20 @@ uvicorn app_fraud:app --reload
 Esto levantará la API en `http://127.0.0.1:8000`
 
 ## Uso de la API
+El servicio de API del proyecto contiene 5 endpoints que nos permitirá interactuar con el servicio así como tambien motitorear el estado del mismo entre otros detalles que describo a continuación:
+- / (get):
+    - Endpoint para dar la bienvenida al servicio. 
+- /predict (post):
+    - este endpoint nos permite poder predecir una sola transacción.
+- /predict_batch (post): 
+    - interactuar con el modelo enviando multiples operaciones a la vez, de esta manera podemos evaluar el modelo cercano a un entorno en producción.
+- /health (get):
+    - Para consultar el estado ser servicio, muy útil cuando se dockerizan los servicios.
+- /generate_transactions (get):
+    - para generar operaciones aleartorias y probar el modelo con operaciones generadas de acuerdo a la estructura del entrenamiento.
+- /docs:
+    - Probar el API directamente y ver los Schemas correspondiente a los endpoints del API.
+
 
 ## 🐋 Docker 🚢
 Para levantar el contenedor solo es necesario correr estos comandos:
