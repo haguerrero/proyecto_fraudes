@@ -1,0 +1,9 @@
+
+services:
+  fraud_api:
+    build: .
+    container_name: fraud_api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./modelo:/app/modelo
