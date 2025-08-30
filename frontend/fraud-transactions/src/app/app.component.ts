@@ -51,7 +51,6 @@ export class AppComponent {
 
     this.fraudService.predictBatch(transactions).subscribe({
       next: (response) => {
-        console.log('Predicción por lotes realizada:', response);
         this.batchResults = {...response};
         this.cd.detectChanges();
       },
@@ -62,11 +61,9 @@ export class AppComponent {
   }
 
     getTransactions(arg: number) {
-      console.log(arg);
     this.fraudService.generateTransaction(arg).subscribe({
       next: (response) => {
         if(response){
-          console.log('Transacción generada:', response);
           this.predictBatch(response.transactions);
         }
       },

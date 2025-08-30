@@ -20,13 +20,10 @@ export class FraudServicesService {
   }
 
   public predictBatch(data: any): Observable<any> {
-    console.log(data);
     return this.http.post<any>(`${this.url}/predict_batch`, { "transactions": data});
   }
 
   public generateTransaction(number: number = 10): Observable<any> {
-    console.log(number);
     return this.http.get<any>(`${this.url}/generate_transactions?number=${number}`);
-
   }
 }
