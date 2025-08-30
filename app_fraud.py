@@ -5,6 +5,13 @@ import pandas as pd
 import numpy as np
 import os
 from typing import Optional
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://127.0.0.1:4200",
+    "http://localhost:4200",
+]
+
 
 # Initialize FastAPI app
 BASE_DIR = os.path.join(os.path.dirname(__file__), 'modelo')
@@ -27,6 +34,13 @@ app = FastAPI(
     version="1.0.0",
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Transaction(BaseModel):
     TransactionID: Optional[str] = None
