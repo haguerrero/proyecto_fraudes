@@ -2,12 +2,11 @@
 <div class="page-root">
   <div class="panel">
     <div class="card-inner">
-      <h2 class="title">🔎 Fraud Prediction Dashboard</h2>
+      <h2 class="title">Fraud Prediction Dashboard</h2>
 
-      <!-- Single -->
+      <!-- Single Prediction -->
       <section class="mb-4">
         <div class="section-title mb-3">
-          <span class="emoji">🔍</span>
           <strong>Predicción Individual</strong>
         </div>
 
@@ -39,7 +38,9 @@
         </div>
       </section>
 
-      <!-- Batch -->
+      <!-- Batch Prediction-->
+      <br />
+      <hr />
       <section>
         <div class="section-title mb-3">
           <span class="emoji">📦</span>
@@ -119,7 +120,7 @@
                     background-color: #f0f0f0;
                   "
                 >
-                  Transacciones con características de fraude
+                  Transacciones con características de fraude 🚨
                 </th>
               </tr>
               <tr>
@@ -143,7 +144,7 @@
                   (item.transaction.type_TRANSFER) { TRANSFER } @else { OTHER }
                 </td>
                 <td>{{ item.probability | percent : "1.0-2" }}</td>
-                <td>@if (item.prediction === 1) { 🚨 Fraude detectado }</td>
+                <td>@if (item.prediction === 1) { Fraude detectado }</td>
               </tr>
               }
             </tbody>
