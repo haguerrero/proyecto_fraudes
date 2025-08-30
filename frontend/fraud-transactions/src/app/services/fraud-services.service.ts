@@ -15,15 +15,18 @@ export class FraudServicesService {
   ) { }
 
   public predict(data: any): Observable<any> {
+    console.log(data);
     return this.http.post<any>(`${this.url}/predict`, data);
   }
 
   public predictBatch(data: any): Observable<any> {
-    return this.http.post<any>(`${this.url}/predict_batch`, data);
+    console.log(data);
+    return this.http.post<any>(`${this.url}/predict_batch`, { "transactions": data});
   }
 
-  public generateTransaction(): Observable<any> {
-    return this.http.get<any>(`${this.url}/generate_transactions`);
+  public generateTransaction(number: number = 10): Observable<any> {
+    console.log(number);
+    return this.http.get<any>(`${this.url}/generate_transactions?number=${number}`);
 
   }
 }
