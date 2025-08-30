@@ -17,8 +17,8 @@
           <div class="col-sm-8">
             <textarea
               class="form-control form-input"
-              rows="5"
-              placeholder='{"step":1,"amount":500,"type_TRANSFER":1,...}'
+              rows="12"
+              placeholder="Ingresa la transaccion en JSON"
               [(ngModel)]="singleData"
               name="singleData"
               required
@@ -27,14 +27,62 @@
         </div>
 
         <div class="d-grid mb-3">
-          <button class="btn btn-primary btn-lg" (click)="predict(singleData)">
+          <button
+            class="btn btn-outline-secondary w-100"
+            (click)="predict(singleData)"
+          >
             Predecir
           </button>
         </div>
 
         <div class="mt-2">
           <h6 class="mb-2">Resultado</h6>
+          @if(singleResult?.prediction !== undefined) {
+          <table class="table table-bordered text-center">
+            <thead>
+              <tr>
+                <th style="padding: 8px; min-width: 140px">Trans. ID</th>
+                <th style="padding: 8px; min-width: 80px">Step</th>
+                <th style="padding: 8px; min-width: 100px">Monto</th>
+                <th style="padding: 8px; min-width: 80px">Tipo</th>
+                <th style="padding: 8px; min-width: 100px">Probabilidad</th>
+                <th style="padding: 8px; min-width: 80px">Predicción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 8px; min-width: 140px; text-align: center">
+                  {{ singleResult.trasaction_id.TransactionID }}
+                </td>
+                <td style="padding: 8px; min-width: 80px; text-align: center">
+                  {{ singleResult.trasaction_id.step }}
+                </td>
+                <td style="padding: 8px; min-width: 100px; text-align: center">
+                  {{ singleResult.trasaction_id.amount }}
+                </td>
+                <td style="padding: 8px; min-width: 100px; text-align: center">
+                  @if (singleResult.trasaction_id.type_CASH_OUT) { CASH_OUT }
+                  @else if (singleResult.trasaction_id.type_TRANSFER) { TRANSFER
+                  } @else { OTHER }
+                </td>
+                <td style="padding: 8px; min-width: 80px; text-align: center">
+                  {{ singleResult.probability | percent : "1.0-2" }}
+                </td>
+                <td style="padding: 8px; min-width: 100px; text-align: center">
+                  @if (singleResult.prediction === 1) { Fraude detectado} @else {
+                  No fraudulenta }
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          }
+          <mat-slide-toggle (change)="showResultsToggle('showSingleResult')"
+            >Ver Json</mat-slide-toggle
+          >
+          @if(showSingleResult) {
           <pre class="result">{{ singleResult | json }}</pre>
+          }
         </div>
       </section>
 
@@ -47,7 +95,7 @@
           <strong>Simulación Batch</strong>
         </div>
 
-        <div class="row align-items-center mb-3">
+        <div class="row align-items-center">
           <label class="col-sm-4 col-form-label text-sm-end"
             >Cantidad de transacciones</label
           >
@@ -62,7 +110,7 @@
           </div>
           <div class="col-sm-4">
             <button
-              class="btn btn-outline-secondary w-100"
+              class="btn btn-outline-secondary w-100 mt-2"
               (click)="getTransactions(batchCount)"
             >
               Simular Batch
@@ -151,7 +199,7 @@
           </table>
           } }
           <br />
-          <mat-slide-toggle (change)="showResultsToggle()"
+          <mat-slide-toggle (change)="showResultsToggle('showResults')"
             >Ver Json</mat-slide-toggle
           >
           @if(showResults) {

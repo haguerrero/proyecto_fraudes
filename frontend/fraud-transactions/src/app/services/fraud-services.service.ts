@@ -15,7 +15,6 @@ export class FraudServicesService {
   ) { }
 
   public predict(data: any): Observable<any> {
-    console.log(data);
     return this.http.post<any>(`${this.url}/predict`, data);
   }
 

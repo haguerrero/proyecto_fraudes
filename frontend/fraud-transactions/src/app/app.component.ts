@@ -22,10 +22,11 @@ export class AppComponent {
 
   dataPredict: {} = {};
   transactions: any[] = [];
-  singleData: any = {}
+  singleData: string = '';
   singleResult: any = {}
   batchResults: any = {}
   batchCount: number = 10;
+  showSingleResult: boolean = false;
   showResults: boolean = false;
 
   constructor(
@@ -37,9 +38,10 @@ export class AppComponent {
 
 
   predict(data: any) {
-    this.fraudService.predict(data).subscribe({
+    const parsed = JSON.parse(data);
+    this.fraudService.predict(parsed).subscribe({
       next: (response) => {
-        console.log('Predicción realizada:', response);
+        this.singleResult = {...response};
       },
       error: (error) => {
         console.error('Error al realizar la predicción!', error);
@@ -73,8 +75,8 @@ export class AppComponent {
     });
   }
 
-  showResultsToggle(){
-    this.showResults = !this.showResults;
-  }
+  showResultsToggle(variableName: 'showResults' | 'showSingleResult') {
+  this[variableName] = !this[variableName];
+}
 
 }
