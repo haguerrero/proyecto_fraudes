@@ -32,6 +32,7 @@
               }
             ],
             "styles": [
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
             "scripts": [],
@@ -75,7 +76,11 @@
               "buildTarget": "fraud-transactions:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+          "poll": 2000,
+          "watch": true
+        }
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
