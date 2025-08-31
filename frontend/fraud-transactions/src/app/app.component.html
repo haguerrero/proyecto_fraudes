@@ -2,7 +2,7 @@
 <div class="page-root">
   <div class="panel">
     <div class="card-inner">
-      <h2 class="title">Fraud Prediction Dashboard</h2>
+      <h2 class="title">Tablero de predicción de fraudes</h2>
 
       <!-- Single Prediction -->
       <section class="mb-4">
@@ -11,20 +11,30 @@
         </div>
 
         <div class="row align-items-start mb-3">
-          <label class="col-sm-4 col-form-label text-sm-end"
-            >Datos (JSON)</label
-          >
-          <div class="col-sm-8">
-            <textarea
-              class="form-control form-input"
-              rows="12"
-              placeholder="Ingresa la transaccion en JSON"
-              [(ngModel)]="singleData"
-              name="singleData"
-              required
-            ></textarea>
-          </div>
-        </div>
+  <label class="col-sm-4 col-form-label text-sm-end">
+    Datos (JSON)
+  </label>
+
+  <div class="col-sm-1 d-flex align-items-center">
+        <span
+          [ngbTooltip]="jsonExample"
+          tooltipClass="json-tooltip"
+        >
+          <i class="fa fa-info-circle"></i>
+        </span>
+      </div>
+
+  <div class="col-sm-7">
+    <textarea
+      class="form-control form-input"
+      rows="12"
+      placeholder="Ingresa la transacción en JSON"
+      [(ngModel)]="singleData"
+      name="singleData"
+      required
+    ></textarea>
+  </div>
+</div>
 
         <div class="d-grid mb-3">
           <button
@@ -36,8 +46,9 @@
         </div>
 
         <div class="mt-2">
-          <h6 class="mb-2">Resultado</h6>
+
           @if(singleResult?.prediction !== undefined) {
+            <h6 class="mb-2">Resultado</h6>
           <table class="table table-bordered text-center">
             <thead>
               <tr>
@@ -69,15 +80,15 @@
                   {{ singleResult.probability | percent : "1.0-2" }}
                 </td>
                 <td style="padding: 8px; min-width: 100px; text-align: center">
-                  @if (singleResult.prediction === 1) { Fraude detectado} @else {
-                  No fraudulenta }
+                  @if (singleResult.prediction === 1) { Fraude detectado} @else
+                  { No fraudulenta }
                 </td>
               </tr>
             </tbody>
           </table>
 
           }
-          <mat-slide-toggle (change)="showResultsToggle('showSingleResult')"
+          <mat-slide-toggle class="mb-3" (change)="showResultsToggle('showSingleResult')"
             >Ver Json</mat-slide-toggle
           >
           @if(showSingleResult) {
@@ -119,8 +130,8 @@
         </div>
 
         <div class="mt-2">
-          <h6 class="mb-2">Resultados Batch</h6>
           @if(batchResults.summary) {
+            <h6 class="mb-2">Resultados Batch</h6>
           <table
             border="1"
             cellpadding="8"
@@ -199,7 +210,7 @@
           </table>
           } }
           <br />
-          <mat-slide-toggle (change)="showResultsToggle('showResults')"
+          <mat-slide-toggle class="mb-3" (change)="showResultsToggle('showResults')"
             >Ver Json</mat-slide-toggle
           >
           @if(showResults) {
