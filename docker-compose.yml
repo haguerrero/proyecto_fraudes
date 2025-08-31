@@ -1,9 +1,24 @@
 
 services:
   fraud_api:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: fraud_api
     ports:
       - "8000:8000"
     volumes:
       - ./modelo:/app/modelo
+  
+  frontend:
+    build: 
+      context: ./frontend/fraud-transactions
+      dockerfile: Dockerfile.frontend
+    container_name: fraud_frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - fraud_api
+    volumes:
+      - ./frontend/fraud-transactions:/app
+      - /app/node_modules
