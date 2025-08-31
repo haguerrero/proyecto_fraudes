@@ -10,21 +10,20 @@
           <strong>Predicción Individual</strong>
         </div>
 
-        <div class="row align-items-start mb-3">
-  <label class="col-sm-4 col-form-label text-sm-end">
-    Datos (JSON)
-  </label>
+        <div class="row align-items-center mb-3">
+  <div class="col-sm-4 d-flex justify-content-end align-items-center">
+    <label class="col-form-label mb-0 me-2">Datos (JSON)</label>
+    <span
+      [ngbTooltip]="jsonExample"
+      tooltipClass="json-tooltip"
+      placement="right"
+      class="d-inline-block"
+    >
+      <i class="bi bi-info-circle text-primary" style="cursor: pointer;"></i>
+    </span>
+  </div>
 
-  <div class="col-sm-1 d-flex align-items-center">
-        <span
-          [ngbTooltip]="jsonExample"
-          tooltipClass="json-tooltip"
-        >
-          <i class="fa fa-info-circle"></i>
-        </span>
-      </div>
-
-  <div class="col-sm-7">
+  <div class="col-sm-8">
     <textarea
       class="form-control form-input"
       rows="12"
@@ -46,9 +45,8 @@
         </div>
 
         <div class="mt-2">
-
           @if(singleResult?.prediction !== undefined) {
-            <h6 class="mb-2">Resultado</h6>
+          <h6 class="mb-2">Resultado</h6>
           <table class="table table-bordered text-center">
             <thead>
               <tr>
@@ -88,7 +86,9 @@
           </table>
 
           }
-          <mat-slide-toggle class="mb-3" (change)="showResultsToggle('showSingleResult')"
+          <mat-slide-toggle
+            class="mb-3"
+            (change)="showResultsToggle('showSingleResult')"
             >Ver Json</mat-slide-toggle
           >
           @if(showSingleResult) {
@@ -105,23 +105,31 @@
           <strong>Simulación Batch</strong>
         </div>
 
-        <div class="row align-items-center">
-          <label class="col-sm-4 col-form-label text-sm-end"
-            >Cantidad de transacciones</label
-          >
-          <div class="col-sm-4">
+        <div class="row g-3 align-items-center">
+          <!-- Label -->
+          <div class="col-auto">
+            <label for="batchCount" class="col-form-label">
+              Cantidad de transacciones
+            </label>
+          </div>
+
+          <!-- Input -->
+          <div class="col-auto">
             <input
+              id="batchCount"
               type="number"
-              class="form-control mb-2"
+              class="form-control"
               min="1"
+              style="width: 120px"
               [(ngModel)]="batchCount"
               name="batchCount"
             />
           </div>
-          <div class="col-sm-4">
+
+          <!-- Botón -->
+          <div class="col-auto">
             <button
-              class="btn btn-outline-secondary w-100"
-              style="margin-top: 0.5rem !important"
+              class="btn btn-outline-secondary"
               (click)="getTransactions(batchCount)"
             >
               Simular Batch
@@ -131,7 +139,7 @@
 
         <div class="mt-2">
           @if(batchResults.summary) {
-            <h6 class="mb-2">Resultados Batch</h6>
+          <h6 class="mb-2">Resultados Batch</h6>
           <table
             border="1"
             cellpadding="8"
@@ -210,7 +218,9 @@
           </table>
           } }
           <br />
-          <mat-slide-toggle class="mb-3" (change)="showResultsToggle('showResults')"
+          <mat-slide-toggle
+            class="mb-3"
+            (change)="showResultsToggle('showResults')"
             >Ver Json</mat-slide-toggle
           >
           @if(showResults) {

@@ -2,7 +2,7 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { JsonPipe, PercentPipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FraudServicesService } from './services/fraud-services.service';
 
 @Component({
@@ -13,10 +13,11 @@ import { FraudServicesService } from './services/fraud-services.service';
     FormsModule,
     MatSlideToggleModule,
     PercentPipe,
-    DecimalPipe
+    DecimalPipe,
+    NgbTooltipModule
   ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 
@@ -28,6 +29,15 @@ export class AppComponent {
   batchCount: number = 10;
   showSingleResult: boolean = false;
   showResults: boolean = false;
+  jsonExample: string = `{
+        "TransactionID": "SIM000003",
+        "step": 718,
+        "amount": 86868.3,
+        "type_CASH_OUT": false,
+        "type_DEBIT": true,
+        "type_PAYMENT": false,
+        "type_TRANSFER": false
+      }`;
 
   constructor(
     private fraudService: FraudServicesService,
