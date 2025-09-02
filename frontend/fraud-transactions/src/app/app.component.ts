@@ -122,4 +122,9 @@ export class AppComponent {
   showResultsToggle(variableName: 'showResults' | 'showSingleResult') {
     this[variableName] = !this[variableName];
   }
+
+  public copyExample() {
+    this.singleData = this.jsonExample.replace(/^Ejemplo de Json:\s*/, '');
+
+  }
 }
