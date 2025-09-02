@@ -1,105 +1,9 @@
-<!-- Pegar en el template del componente -->
 <div class="page-root">
   <div class="panel">
     <div class="card-inner">
       <h2 class="title">Tablero de predicción de fraudes</h2>
 
-      <!-- Single Prediction -->
-      <section class="mb-4">
-        <div class="section-title mb-3">
-          <strong>Predicción Individual</strong>
-        </div>
-
-        <div class="row align-items-center mb-3">
-  <div class="col-sm-4 d-flex justify-content-end align-items-center">
-    <label class="col-form-label mb-0 me-2">Datos (JSON)</label>
-    <span
-      [ngbTooltip]="jsonExample"
-      tooltipClass="json-tooltip"
-      placement="right"
-      class="d-inline-block"
-    >
-      <i class="bi bi-info-circle text-primary" style="cursor: pointer;"></i>
-    </span>
-  </div>
-
-  <div class="col-sm-8">
-    <textarea
-      class="form-control form-input"
-      rows="12"
-      placeholder="Ingresa la transacción en JSON"
-      [(ngModel)]="singleData"
-      name="singleData"
-      required
-    ></textarea>
-  </div>
-</div>
-
-        <div class="d-grid mb-3">
-          <button
-            class="btn btn-outline-secondary w-100"
-            (click)="predict(singleData)"
-          >
-            Predecir
-          </button>
-        </div>
-
-        <div class="mt-2">
-          @if(singleResult?.prediction !== undefined) {
-          <h6 class="mb-2">Resultado</h6>
-          <table class="table table-bordered text-center">
-            <thead>
-              <tr>
-                <th style="padding: 8px; min-width: 140px">Trans. ID</th>
-                <th style="padding: 8px; min-width: 80px">Step</th>
-                <th style="padding: 8px; min-width: 100px">Monto</th>
-                <th style="padding: 8px; min-width: 80px">Tipo</th>
-                <th style="padding: 8px; min-width: 100px">Probabilidad</th>
-                <th style="padding: 8px; min-width: 80px">Predicción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="padding: 8px; min-width: 140px; text-align: center">
-                  {{ singleResult.trasaction_id.TransactionID }}
-                </td>
-                <td style="padding: 8px; min-width: 80px; text-align: center">
-                  {{ singleResult.trasaction_id.step }}
-                </td>
-                <td style="padding: 8px; min-width: 100px; text-align: center">
-                  {{ singleResult.trasaction_id.amount }}
-                </td>
-                <td style="padding: 8px; min-width: 100px; text-align: center">
-                  @if (singleResult.trasaction_id.type_CASH_OUT) { CASH_OUT }
-                  @else if (singleResult.trasaction_id.type_TRANSFER) { TRANSFER
-                  } @else { OTHER }
-                </td>
-                <td style="padding: 8px; min-width: 80px; text-align: center">
-                  {{ singleResult.probability | percent : "1.0-2" }}
-                </td>
-                <td style="padding: 8px; min-width: 100px; text-align: center">
-                  @if (singleResult.prediction === 1) { Fraude detectado} @else
-                  { No fraudulenta }
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          }
-          <mat-slide-toggle
-            class="mb-3"
-            (change)="showResultsToggle('showSingleResult')"
-            >Ver Json</mat-slide-toggle
-          >
-          @if(showSingleResult) {
-          <pre class="result">{{ singleResult | json }}</pre>
-          }
-        </div>
-      </section>
-
       <!-- Batch Prediction-->
-      <br />
-      <hr />
       <section>
         <div class="section-title mb-3">
           <strong>Simulación Batch</strong>
@@ -126,7 +30,7 @@
             />
           </div>
 
-          <!-- Botón -->
+          <!-- Button execute batch prediction -->
           <div class="col-auto">
             <button
               class="btn btn-outline-secondary"
@@ -201,14 +105,17 @@
             </thead>
             <tbody>
               @for (item of batchResults?.summary.fraud_transactions; track
-              item.transaction.TransactionID) {
+              item.transaction_raw.TransactionID) {
               <tr>
-                <td>{{ item.transaction.TransactionID }}</td>
-                <td>{{ item.transaction.step }}</td>
-                <td>{{ item.transaction.amount | number : "1.2-2" }}</td>
+                <td>{{ item.transaction_raw.TransactionID }}</td>
+                <td>{{ item.transaction_raw.step }}</td>
+                <td>{{ item.transaction_raw.amount | number : "1.2-2" }}</td>
                 <td>
-                  @if (item.transaction.type_CASH_OUT) { CASH_OUT } @else if
-                  (item.transaction.type_TRANSFER) { TRANSFER } @else { OTHER }
+                  @if (item.transaction_features.type_CASH_OUT) { CASH_OUT }
+                  @else if (item.transaction_features.type_TRANSFER) { TRANSFER
+                  } @else if (item.transaction_features.type_DEBIT) { DEBIT }
+                  @else if (item.transaction_features.type_PAYMENT) { PAYMENT }
+                  @else { OTHER }
                 </td>
                 <td>{{ item.probability | percent : "1.0-2" }}</td>
                 <td>@if (item.prediction === 1) { Fraude detectado }</td>
@@ -225,6 +132,98 @@
           >
           @if(showResults) {
           <pre class="result">{{ batchResults | json }}</pre>
+          }
+        </div>
+      </section>
+
+      <br />
+      <hr />
+
+      <!-- Single Prediction -->
+      <section class="mb-4">
+        <div class="section-title mb-3">
+          <strong>Predicción Individual</strong>
+        </div>
+
+        <div class="row align-items-center mb-3">
+          <div class="col-sm-4 d-flex justify-content-end align-items-center">
+            <label class="col-form-label mb-0 me-2">Datos (JSON)</label>
+            <span
+              [ngbTooltip]="jsonExample"
+              tooltipClass="json-tooltip"
+              placement="right"
+              class="d-inline-block"
+            >
+              <i
+                class="bi bi-info-circle text-primary"
+                style="cursor: pointer"
+              ></i>
+            </span>
+          </div>
+
+          <div class="col-sm-8">
+            <textarea
+              class="form-control form-input"
+              rows="12"
+              placeholder="Ingresa la transacción en JSON"
+              [(ngModel)]="singleData"
+              name="singleData"
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="d-grid mb-3">
+          <button
+            class="btn btn-outline-secondary w-100"
+            (click)="predict(singleData)"
+          >
+            Predecir
+          </button>
+        </div>
+
+        <div class="mt-2">
+          @if(singleResult?.prediction !== undefined) {
+          <h6 class="mb-2">Resultado</h6>
+          <table class="table table-bordered text-center">
+            <thead>
+              <tr>
+                <th style="padding: 8px; min-width: 140px">Trans. ID</th>
+                <th style="padding: 8px; min-width: 80px">Step</th>
+                <th style="padding: 8px; min-width: 100px">Monto</th>
+                <th style="padding: 8px; min-width: 80px">Tipo</th>
+                <th style="padding: 8px; min-width: 100px">Probabilidad</th>
+                <th style="padding: 8px; min-width: 80px">Predicción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ singleResult.transaction_raw.TransactionID }}</td>
+                <td>{{ singleResult.transaction_raw.step }}</td>
+                <td>{{ singleResult.transaction_raw.amount }}</td>
+                <td>
+                  @if (singleResult.transaction_features.type_CASH_OUT) {
+                  CASH_OUT } @else if
+                  (singleResult.transaction_features.type_TRANSFER) { TRANSFER }
+                  @else { OTHER }
+                </td>
+                <td>{{ singleResult.probability | percent : "1.0-2" }}</td>
+                <td>
+                  @if (singleResult.prediction === 1) { Fraude detectado } @else
+                  { No fraudulenta }
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          }
+          <mat-slide-toggle
+            class="mb-3"
+            (change)="showResultsToggle('showSingleResult')"
+            >Ver Json</mat-slide-toggle
+          >
+          @if(showSingleResult) {
+          <pre class="result">{{ singleResult | json }}</pre>
           }
         </div>
       </section>
